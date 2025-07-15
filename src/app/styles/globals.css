@@ -8,7 +8,10 @@
     overflow-x: hidden;
   }
   body {
-    @apply font-inter text-text-primary bg-bg-primary overflow-x-hidden;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    overflow-x: hidden;
     line-height: 1.6;
   }
   body.menu-open,
@@ -20,29 +23,48 @@
 /* Estilo para a animação de hover nos links da navbar */
 @layer components {
     .nav-link-hover {
-        @apply relative transition-colors duration-200;
+        position: relative;
+        transition-property: color;
+        transition-duration: 200ms;
     }
     .nav-link-hover::before {
         content: attr(data-text);
-        @apply absolute top-0 left-0 text-accent overflow-hidden w-0 transition-all duration-300;
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--accent, #ff6600); /* Replace with your accent color variable or value */
+        overflow: hidden;
+        width: 0;
+        transition-property: all;
+        transition-duration: 300ms;
     }
     .nav-link-hover:hover::before {
-        @apply w-full;
+        width: 100%;
     }
 
     /* Animação de brilho para botões */
     .btn-shine::before {
         content: '';
-        @apply absolute top-0 -left-full w-full h-full transition-all duration-500;
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        transition-property: all;
+        transition-duration: 500ms;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     }
     .btn-shine:hover::before {
-        @apply left-full;
+        left: 100%;
     }
     
     /* Animação de ripple (click) */
     .ripple {
-        @apply absolute rounded-full bg-white/30 transform scale-0 pointer-events-none;
+        position: absolute;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.3);
+        transform: scale(0);
+        pointer-events: none;
         animation: ripple 0.6s linear;
     }
 }
