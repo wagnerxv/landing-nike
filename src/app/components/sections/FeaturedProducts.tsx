@@ -106,24 +106,9 @@ const productsData = [
   }
 ];
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: string;
-  oldPrice?: string;
-  badge?: string;
-  badgeColor?: string;
-  image: string;
-  rating: number;
-  reviews: number;
-  colors: string[];
-  sizes: string[];
-}
-
 interface FeaturedProductsProps {
-  onAddToCart?: (product: Product) => void;
-  onQuickView?: (product: Product) => void;
+  onAddToCart?: (product: any) => void;
+  onQuickView?: (product: any) => void;
 }
 
 const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuickView }) => {

@@ -12,34 +12,36 @@ interface CartItem {
   color?: string;
 }
 
+interface OrderData {
+  id: number;
+  items: CartItem[];
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  address: {
+    zipCode: string;
+    address: string;
+    number: string;
+    complement: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+  };
+  payment: {
+    method: 'credit' | 'debit' | 'pix' | 'boleto';
+    total: number;
+  };
+  status: string;
+  date: string;
+}
+
 interface CheckoutProps {
   isOpen: boolean;
   onClose: () => void;
   items: CartItem[];
-  onOrderComplete: (orderData: {
-    id: number;
-    items: CartItem[];
-    customer: {
-      name: string;
-      email: string;
-      phone: string;
-    };
-    address: {
-      zipCode: string;
-      address: string;
-      number: string;
-      complement: string;
-      neighborhood: string;
-      city: string;
-      state: string;
-    };
-    payment: {
-      method: 'credit' | 'debit' | 'pix' | 'boleto';
-      total: number;
-    };
-    status: string;
-    date: string;
-  }) => void;
+  onOrderComplete: (orderData: OrderData) => void;
 }
 
 interface FormData {
@@ -48,7 +50,7 @@ interface FormData {
   lastName: string;
   email: string;
   phone: string;
-  
+
   // Endereço
   zipCode: string;
   address: string;
@@ -57,7 +59,7 @@ interface FormData {
   neighborhood: string;
   city: string;
   state: string;
-  
+
   // Pagamento
   paymentMethod: 'credit' | 'debit' | 'pix' | 'boleto';
   cardNumber: string;
