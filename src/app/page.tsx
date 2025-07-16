@@ -114,7 +114,7 @@ export default function Home() {
 
   const handleAddToCart = (product: any, selectedSize?: string, selectedColor?: string, quantity: number = 1) => {
     const newItem: CartItem = {
-      id: product.id,
+      id: Date.now(), // Use timestamp para garantir ID único
       name: product.name,
       price: product.price,
       image: product.image || product.images?.[0],
@@ -124,20 +124,16 @@ export default function Home() {
     };
 
     setCartItems(prev => {
-      const existingItem = prev.find(item => 
-        item.id === newItem.id && 
+      const existingItemIndex = prev.findIndex(item => 
+        item.name === newItem.name && 
         item.size === newItem.size && 
         item.color === newItem.color
       );
 
-      if (existingItem) {
-        return prev.map(item =>
-          item.id === existingItem.id && 
-          item.size === existingItem.size && 
-          item.color === existingItem.color
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+      if (existingItemIndex >= 0) {
+        const updatedItems = [...prev];
+        updatedItems[existingItemIndex].quantity += quantity;
+        return updatedItems;
       }
 
       return [...prev, newItem];
@@ -194,7 +190,18 @@ export default function Home() {
   };
 
   const handleQuickView = (product: any) => {
-    setSelectedProduct(product);
+    // Criar um produto completo baseado no produto básico
+    const completeProduct = {
+      ...mockProductDetail,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      oldPrice: product.oldPrice,
+      images: [product.image, ...mockProductDetail.images.slice(1)],
+      category: product.category
+    };
+    
+    setSelectedProduct(completeProduct);
     setProductDetailOpen(true);
   };
 
@@ -235,17 +242,32 @@ export default function Home() {
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Erro ao carregar usuário:', error);
+        localStorage.removeItem('user');
+      }
     }
 
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (error) {
+        console.error('Erro ao carregar carrinho:', error);
+        localStorage.removeItem('cart');
+      }
     }
 
     const savedOrders = localStorage.getItem('orders');
     if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
+      try {
+        setOrders(JSON.parse(savedOrders));
+      } catch (error) {
+        console.error('Erro ao carregar pedidos:', error);
+        localStorage.removeItem('orders');
+      }
     }
   }, []);
 
@@ -256,39 +278,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('orders', JSON.stringify(orders));
   }, [orders]);
-
-  useEffect(() => {
-    if (!loading) {
-      const tl = gsap.timeline();
-      tl.to('.hero-title .line', {
-        duration: 1.2,
-        y: 0,
-        opacity: 1,
-        stagger: 0.2,
-        ease: 'power3.out',
-        delay: 0.2
-      })
-      .to('.hero-subtitle', {
-        duration: 1,
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out'
-      }, '-=0.8')
-      .to('.hero-cta button', {
-        duration: 0.8,
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        ease: 'power2.out'
-      }, '-=0.5')
-      .to('.hero-scroll', {
-        duration: 0.8,
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out'
-      }, '-=0.3');
-    }
-  }, [loading]);
 
   useEffect(() => {
     const addRippleEffect = (e: MouseEvent) => {

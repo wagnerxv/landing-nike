@@ -101,6 +101,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart, onC
                   width={600}
                   height={600}
                   className="w-full h-full object-cover"
+                  priority
                 />
               </div>
 
