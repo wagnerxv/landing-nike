@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleAddToCart = async () => {
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simular API call
+      await new Promise(resolve => setTimeout(resolve, 300));
       onAddToCart?.(product);
     } finally {
       setIsLoading(false);
@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     return Array.from({ length: 5 }, (_, i) => (
       <svg
         key={i}
-        className={`w-4 h-4 ${i < rating ? 'text-yellow-400' : 'text-nike-gray-300'}`}
+        className={`w-3 h-3 ${i < rating ? 'text-yellow-400' : 'text-tertiary'}`}
         fill="currentColor"
         viewBox="0 0 20 20"
       >
@@ -56,41 +56,41 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="product-card group bg-white rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-2 overflow-hidden">
-      {/* Imagem do produto */}
-      <div className="relative aspect-square overflow-hidden bg-nike-gray-50">
+    <div className="card group p-0 overflow-hidden">
+      {/* Product Image */}
+      <div className="relative aspect-square overflow-hidden bg-surface-hover">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
         
         {/* Badge */}
         {product.badge && (
-          <div className={`absolute top-4 left-4 ${product.badgeColor || 'bg-accent-600'} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider`}>
+          <div className={`absolute top-3 left-3 ${product.badgeColor || 'bg-accent'} text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide`}>
             {product.badge}
           </div>
         )}
 
-        {/* Overlay com ações */}
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center gap-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+        {/* Hover Actions */}
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center gap-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
           <button 
             onClick={() => onQuickView?.(product)}
-            className="bg-white text-nike-black px-4 py-2 text-sm font-semibold rounded-lg hover:bg-nike-gray-100 transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
+            className="btn btn-secondary text-white border-white hover:bg-white hover:text-black px-4 py-2 text-sm"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            Vista Rápida
+            Quick View
           </button>
           
           <button 
             onClick={handleAddToCart}
             disabled={isLoading}
-            className="bg-accent-600 text-white px-4 py-2 text-sm font-semibold rounded-lg hover:bg-accent-700 transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn btn-primary px-4 py-2 text-sm disabled:opacity-50"
           >
             {isLoading ? (
               <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -102,75 +102,72 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             )}
-            {isLoading ? 'Adicionando...' : 'Adicionar'}
+            Add to Cart
           </button>
         </div>
 
-        {/* Botão de favorito */}
-        <button className="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-nike-gray-600 hover:text-accent-600 hover:bg-white transition-all duration-200 opacity-0 group-hover:opacity-100">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {/* Favorite Button */}
+        <button className="absolute top-3 right-3 w-8 h-8 bg-surface/90 rounded-full flex items-center justify-center text-secondary hover:text-accent hover:bg-surface transition-all duration-150 opacity-0 group-hover:opacity-100">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
         </button>
       </div>
 
-      {/* Informações do produto */}
-      <div className="p-6">
-        {/* Categoria */}
-        <p className="text-sm text-nike-gray-500 uppercase tracking-wider font-medium mb-2">
+      {/* Product Info */}
+      <div className="p-4">
+        {/* Category */}
+        <p className="text-xs text-tertiary uppercase tracking-wider font-medium mb-2">
           {product.category}
         </p>
 
-        {/* Nome do produto */}
-        <h3 className="text-lg font-bold text-nike-black mb-3 line-clamp-2 group-hover:text-accent-600 transition-colors duration-200">
+        {/* Product Name */}
+        <h3 className="text-base font-semibold text-primary mb-2 line-clamp-2 group-hover:text-accent transition-colors duration-150">
           {product.name}
         </h3>
 
-        {/* Avaliação */}
+        {/* Rating */}
         {product.rating && (
           <div className="flex items-center gap-2 mb-3">
             <div className="flex items-center">
               {renderStars(product.rating)}
             </div>
-            <span className="text-sm text-nike-gray-600">
+            <span className="text-xs text-secondary">
               ({product.reviews || 0})
             </span>
           </div>
         )}
 
-        {/* Cores disponíveis */}
+        {/* Colors */}
         {product.colors && product.colors.length > 0 && (
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-sm text-nike-gray-600">Cores:</span>
-            <div className="flex gap-1">
-              {product.colors.slice(0, 4).map((color, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedColor(index)}
-                  className={`w-6 h-6 rounded-full border-2 transition-all duration-200 ${
-                    selectedColor === index ? 'border-nike-black scale-110' : 'border-nike-gray-300'
-                  }`}
-                  style={{ backgroundColor: color }}
-                  aria-label={`Cor ${index + 1}`}
-                />
-              ))}
-              {product.colors.length > 4 && (
-                <span className="text-xs text-nike-gray-500 ml-1">
-                  +{product.colors.length - 4}
-                </span>
-              )}
-            </div>
+          <div className="flex items-center gap-1 mb-3">
+            {product.colors.slice(0, 4).map((color, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedColor(index)}
+                className={`w-4 h-4 rounded-full border transition-all duration-150 ${
+                  selectedColor === index ? 'border-primary scale-110' : 'border-border'
+                }`}
+                style={{ backgroundColor: color }}
+                aria-label={`Color ${index + 1}`}
+              />
+            ))}
+            {product.colors.length > 4 && (
+              <span className="text-xs text-tertiary ml-1">
+                +{product.colors.length - 4}
+              </span>
+            )}
           </div>
         )}
 
-        {/* Preço */}
-        <div className="flex items-center gap-3">
-          <span className="text-xl font-bold text-accent-600">
-            R$ {product.price}
+        {/* Price */}
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-bold text-accent">
+            ${product.price}
           </span>
           {product.oldPrice && (
-            <span className="text-sm text-nike-gray-500 line-through">
-              R$ {product.oldPrice}
+            <span className="text-sm text-tertiary line-through">
+              ${product.oldPrice}
             </span>
           )}
         </div>

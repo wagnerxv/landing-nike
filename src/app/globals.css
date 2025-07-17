@@ -1,242 +1,390 @@
 /* =================================================================
-   NIKE E-COMMERCE - DARK THEME CORE STYLES
+   NIKE E-COMMERCE - PREMIUM DARK THEME
    ================================================================= */
 
-   @import "tailwindcss";
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-   /* 1. PALETA DE CORES SEMÂNTICA (DARK-FIRST)
-      ================================================================= */
-   :root {
-     /* Cores base do tema escuro */
-     --bg-primary: #111827;       /* Fundo principal (Cinza-azulado escuro) */
-     --bg-secondary: #1f2937;    /* Superfícies, cards, modais (um tom mais claro) */
-     --bg-dark: #0d1117;          /* O tom mais escuro, para footers, etc. */
-   
-     /* Cores de destaque (Accent) */
-     --accent: #e53e3e;          /* Vermelho vibrante Nike */
-     --accent-hover: #c53030;    /* Vermelho mais escuro para hover */
-     
-     /* Cores de texto */
-     --text-primary: #f8f9fa;      /* Branco suave para texto principal */
-     --text-secondary: #a0aec0;    /* Cinza claro para texto de apoio */
-     --text-light: #718096;        /* Cinza mais escuro para placeholders e detalhes */
-     
-     /* Bordas e Divisórias */
-     --border-color: #374151;      /* Bordas subtis */
-     
-     /* Cores de Feedback */
-     --success: #38a169;
-     --warning: #dd6b20;
-     --error: #e53e3e;
-   
-     /* Outras variáveis de design */
-     --radius: 0.5rem;
-     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-     --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-     --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-     --shadow-hard: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-     --shadow-glow: 0 0 20px rgba(229, 62, 62, 0.4);
-   }
-   
-   
-   /* 2. RESET E CONFIGURAÇÕES GLOBAIS
-      ================================================================= */
-   * {
-     box-sizing: border-box;
-     margin: 0;
-     padding: 0;
-   }
-   
-   html {
-     scroll-behavior: smooth;
-     overflow-x: hidden;
-     font-size: 16px;
-   }
-   
-   body {
-     font-family: var(--font-sans);
-     color: var(--text-primary);
-     background-color: var(--bg-primary);
-     line-height: 1.6;
-     -webkit-font-smoothing: antialiased;
-     -moz-osx-font-smoothing: grayscale;
-   }
-   
-   /* Bloqueio de scroll para modais e menus */
-   body.menu-open,
-   body.loading {
-     overflow: hidden;
-   }
-   
-   
-   /* 3. ESTILOS DE COMPONENTES E CLASSES REUTILIZÁVEIS
-      ================================================================= */
-   
-   /* --- Layout --- */
-   .container {
-     width: 100%;
-     max-width: 1280px; /* Um pouco mais de espaço */
-     margin: 0 auto;
-     padding: 0 1.5rem;
-   }
-   
-   /* --- Botões --- */
-   .btn {
-     display: inline-flex;
-     align-items: center;
-     justify-content: center;
-     gap: 0.5rem;
-     padding: 0.75rem 1.5rem;
-     font-size: 0.875rem;
-     font-weight: 600;
-     text-transform: uppercase;
-     letter-spacing: 0.05em;
-     border: 2px solid transparent;
-     border-radius: var(--radius);
-     cursor: pointer;
-     text-decoration: none;
-     position: relative;
-     overflow: hidden;
-     /* Transições suaves para uma sensação fluída */
-     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-   }
-   
-   .btn:hover {
-     transform: translateY(-2px);
-     box-shadow: var(--shadow-medium);
-   }
-   
-   /* Estilos para as classes que já usa, adaptadas para o dark theme */
-   .btn-primary, .bg-red-600 {
-     background-color: var(--accent);
-     color: var(--text-primary);
-   }
-   .btn-primary:hover, .bg-red-600:hover, .hover\:bg-red-700:hover {
-     background-color: var(--accent-hover);
-   }
-   
-   .btn-secondary {
-     background-color: transparent;
-     color: var(--text-primary);
-     border-color: var(--border-color);
-   }
-   .btn-secondary:hover {
-     background-color: var(--text-primary);
-     color: var(--bg-primary);
-     border-color: var(--text-primary);
-   }
-   
-   .btn-outline {
-     background-color: transparent;
-     color: var(--text-primary);
-     border-color: var(--text-primary);
-   }
-   .btn-outline:hover {
-     background-color: var(--text-primary);
-     color: var(--bg-primary);
-   }
-   
-   /* Animação de brilho no hover */
-   .btn-shine::before {
-     content: '';
-     position: absolute;
-     top: 0;
-     left: -100%;
-     width: 100%;
-     height: 100%;
-     transition: all 0.7s ease;
-     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-   }
-   .btn-shine:hover::before {
-     left: 100%;
-   }
-   
-   
-   /* 4. ANIMAÇÕES E EFEITOS ESPECIAIS
-      ================================================================= */
-   
-   @keyframes fadeInUp {
-     from { opacity: 0; transform: translateY(25px); }
-     to { opacity: 1; transform: translateY(0); }
-   }
-   
-   /* Efeito Ripple para cliques */
-   @keyframes ripple {
-     to { transform: scale(4); opacity: 0; }
-   }
-   .ripple {
-     position: absolute;
-     border-radius: 50%;
-     background: rgba(255, 255, 255, 0.2);
-     transform: scale(0);
-     animation: ripple 0.6s linear;
-     pointer-events: none;
-   }
-   
-   
-   /* 5. CLASSES DE UTILIDADE E MAPEAMENTO (A MÁGICA)
-      Aqui, redefinimos as classes que você já usa para o tema escuro.
-      ================================================================= */
-   
-   /* Cores de Fundo */
-   .bg-white { background-color: var(--bg-secondary); }
-   .bg-gray-50 { background-color: var(--bg-secondary); }
-   .bg-gray-100 { background-color: var(--surface-hover); }
-   .bg-bg-dark { background-color: var(--bg-dark); }
-   .bg-bg-secondary { background-color: var(--bg-secondary); }
-   .bg-accent-600, .bg-red-600 { background-color: var(--accent); }
-   .hover\:bg-gray-100:hover { background-color: var(--surface-hover); }
-   
-   /* Cores de Texto */
-   .text-white, .text-secondary { color: var(--text-primary); }
-   .text-gray-900, .text-gray-700, .text-text-primary { color: var(--text-primary); }
-   .text-gray-600, .text-text-secondary { color: var(--text-secondary); }
-   .text-gray-500, .text-text-light { color: var(--text-light); }
-   .text-red-600, .text-accent-600 { color: var(--accent); }
-   .hover\:text-red-600:hover, .hover\:text-accent:hover { color: var(--accent); }
-   .hover\:text-gray-900:hover { color: var(--text-primary); }
-   
-   /* Cores de Borda */
-   .border-gray-200, .border-gray-300, .border-white\/10 { border-color: var(--border-color); }
-   .hover\:border-gray-400:hover { border-color: var(--border-hover); }
-   .focus\:border-red-500:focus { border-color: var(--accent); }
-   
-   /* Sombras */
-   .shadow-lg { box-shadow: var(--shadow-medium); }
-   .shadow-soft { box-shadow: var(--shadow-soft); }
-   .shadow-medium { box-shadow: var(--shadow-medium); }
-   
-   /* Animações */
-   .animate-fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
-   
-   /* Outros */
-   button:focus, a:focus, input:focus, textarea:focus, select:focus {
-     outline: 2px solid var(--accent);
-     outline-offset: 2px;
-     border-radius: 4px; /* Adiciona um raio ao outline */
-   }
-   .focus\:ring-red-500:focus {
-     box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.4);
-   }
-   
-   /* --- Transições Suaves Globais --- */
-   button, a, input, select, textarea, .product-card, .collection-item {
-     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-   }
-   
-   /* Melhoria de performance para animações */
-   .gpu-accelerated {
-     transform: translateZ(0);
-     will-change: transform, opacity;
-   }
-   
-   /* Correções específicas para o Tailwind v4 (se aplicável) */
-   .nike-gray-50, .nike-gray-100, .nike-gray-200, .nike-gray-300, 
-   .nike-gray-400, .nike-gray-500, .nike-gray-600, .nike-black,
-   .accent-500, .accent-700, .error-50, .error-200, .error-500, .error-600,
-   .bg-nike-gray-50, .bg-nike-gray-100, .bg-nike-gray-200, .bg-accent-50, 
-   .bg-accent-500, .bg-accent-600, .border-nike-gray-200, .border-nike-gray-300, 
-   .border-accent-500, .ring-accent-500, .focus\:ring-accent-500:focus, 
-   .focus\:border-accent-500:focus {
-     /* Estas classes foram mapeadas acima, não precisam de mais estilos aqui */
-   }
+/* 1. PREMIUM DARK COLOR PALETTE
+   ================================================================= */
+:root {
+  /* Primary Backgrounds */
+  --bg-primary: #121212;         /* Main background - charcoal */
+  --bg-surface: #1E1E1E;         /* Cards, modals, surfaces */
+  --bg-surface-hover: #242424;   /* Hover states */
+  
+  /* Nike Brand Accent */
+  --accent: #DC2626;             /* Nike red - use sparingly */
+  --accent-hover: #B91C1C;       /* Darker red for hover */
+  
+  /* Typography */
+  --text-primary: #EAEAEA;       /* Primary text - soft white */
+  --text-secondary: #A0A0A0;     /* Secondary text - medium gray */
+  --text-tertiary: #6B7280;      /* Tertiary text - darker gray */
+  
+  /* Borders & Dividers */
+  --border: #2A2A2A;             /* Subtle borders */
+  --border-hover: #3A3A3A;       /* Hover borders */
+  
+  /* Feedback Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. GLOBAL RESET & BASE STYLES
+   ================================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto !important; /* NATIVE SCROLLING ONLY */
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Disable smooth scrolling globally */
+* {
+  scroll-behavior: auto !important;
+}
+
+/* 3. PREMIUM COMPONENT STYLES
+   ================================================================= */
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Premium Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-hover);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+}
+
+/* Premium Card System */
+.card {
+  background-color: var(--bg-surface);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-hover);
+}
+
+/* Input System */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Typography Scale */
+.text-display {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.text-h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.text-h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Color Utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-accent { color: var(--accent); }
+
+.bg-primary { background-color: var(--bg-primary); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-surface-hover { background-color: var(--bg-surface-hover); }
+.bg-accent { background-color: var(--accent); }
+
+/* Grid System */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Utility Classes */
+.backdrop-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--border), var(--border-hover));
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+/* Loading States */
+.loading {
+  overflow: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent);
+  color: white;
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .text-display {
+    font-size: 2.5rem;
+  }
+  
+  .text-h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Remove all Tailwind overrides that conflict with our premium theme */
+.bg-white,
+.bg-gray-50,
+.bg-gray-100,
+.bg-gray-200,
+.bg-gray-800,
+.bg-gray-900 {
+  background-color: var(--bg-surface) !important;
+}
+
+.text-white,
+.text-gray-900,
+.text-gray-800,
+.text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-600,
+.text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+
+.text-gray-400 {
+  color: var(--text-tertiary) !important;
+}
+
+.border-gray-200,
+.border-gray-300,
+.border-gray-400 {
+  border-color: var(--border) !important;
+}
+
+.bg-red-600 {
+  background-color: var(--accent) !important;
+}
+
+.text-red-600 {
+  color: var(--accent) !important;
+}
+
+.hover\:bg-red-700:hover {
+  background-color: var(--accent-hover) !important;
+}

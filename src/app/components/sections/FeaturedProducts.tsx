@@ -10,9 +10,9 @@ const productsData = [
     id: 1, 
     name: 'Nike Air Max 270', 
     category: 'running', 
-    price: '699,99', 
-    oldPrice: '899,99', 
-    badge: 'Novo', 
+    price: '699.99', 
+    oldPrice: '899.99', 
+    badge: 'New', 
     image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 5,
     reviews: 128,
@@ -23,7 +23,7 @@ const productsData = [
     id: 2, 
     name: 'Air Jordan 1 Retro', 
     category: 'basketball', 
-    price: '1.299,99', 
+    price: '1299.99', 
     badge: 'Hot', 
     badgeColor: 'bg-orange-500', 
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
@@ -36,7 +36,7 @@ const productsData = [
     id: 3, 
     name: 'Nike Dunk Low', 
     category: 'lifestyle', 
-    price: '549,99', 
+    price: '549.99', 
     image: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 4,
     reviews: 67,
@@ -47,8 +47,8 @@ const productsData = [
     id: 4, 
     name: 'Nike React Infinity', 
     category: 'running', 
-    price: '799,99', 
-    badge: 'Lançamento', 
+    price: '799.99', 
+    badge: 'Launch', 
     image: 'https://images.pexels.com/photos/1598509/pexels-photo-1598509.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 5,
     reviews: 45,
@@ -59,9 +59,9 @@ const productsData = [
     id: 5, 
     name: 'Nike Air Force 1', 
     category: 'lifestyle', 
-    price: '459,99', 
-    oldPrice: '599,99',
-    badge: 'Promoção',
+    price: '459.99', 
+    oldPrice: '599.99',
+    badge: 'Sale',
     badgeColor: 'bg-green-500',
     image: 'https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 5,
@@ -73,7 +73,7 @@ const productsData = [
     id: 6, 
     name: 'Nike Zoom Pegasus', 
     category: 'running', 
-    price: '649,99', 
+    price: '649.99', 
     image: 'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 4,
     reviews: 156,
@@ -84,8 +84,8 @@ const productsData = [
     id: 7, 
     name: 'Nike SB Dunk', 
     category: 'lifestyle', 
-    price: '699,99', 
-    badge: 'Edição Limitada',
+    price: '699.99', 
+    badge: 'Limited',
     badgeColor: 'bg-purple-500',
     image: 'https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 5,
@@ -97,7 +97,7 @@ const productsData = [
     id: 8, 
     name: 'Nike Blazer Mid', 
     category: 'lifestyle', 
-    price: '589,99', 
+    price: '589.99', 
     image: 'https://images.pexels.com/photos/1598506/pexels-photo-1598506.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
     rating: 4,
     reviews: 92,
@@ -124,9 +124,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'price-low':
-        return parseFloat(a.price.replace(',', '.')) - parseFloat(b.price.replace(',', '.'));
+        return parseFloat(a.price) - parseFloat(b.price);
       case 'price-high':
-        return parseFloat(b.price.replace(',', '.')) - parseFloat(a.price.replace(',', '.'));
+        return parseFloat(b.price) - parseFloat(a.price);
       case 'name':
         return a.name.localeCompare(b.name);
       case 'rating':
@@ -139,44 +139,48 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      // Animação do título
-      gsap.from(".section-title .title-line", {
-        y: 100,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ".section-title",
-          start: "top 80%",
-          toggleActions: 'play none none reverse'
+      // Title animation
+      gsap.fromTo(".section-title", 
+        { y: 40, opacity: 0 },
+        {
+          y: 0, 
+          opacity: 1, 
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: ".section-title",
+            start: "top 80%",
+            toggleActions: 'play none none reverse'
+          }
         }
-      });
+      );
 
-      // Animação dos filtros
-      gsap.from(".filter-buttons", {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: ".filter-buttons",
-          start: "top 85%",
-          toggleActions: 'play none none reverse'
+      // Filter buttons animation
+      gsap.fromTo(".filter-buttons", 
+        { y: 30, opacity: 0 },
+        {
+          y: 0, 
+          opacity: 1, 
+          duration: 0.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: ".filter-buttons",
+            start: "top 85%",
+            toggleActions: 'play none none reverse'
+          }
         }
-      });
+      );
 
-      // Animação dos produtos
+      // Product cards animation
       gsap.utils.toArray('.product-card').forEach((card, i) => {
         gsap.fromTo(card as HTMLElement, 
-          { y: 60, opacity: 0, scale: 0.9 }, 
+          { y: 40, opacity: 0 }, 
           {
             y: 0, 
-            opacity: 1, 
-            scale: 1,
-            duration: 0.8, 
+            opacity: 1,
+            duration: 0.5, 
             delay: (i % 4) * 0.1, 
-            ease: 'back.out(1.7)',
+            ease: 'power2.out',
             scrollTrigger: { 
               trigger: card as HTMLElement, 
               start: 'top 85%',
@@ -195,13 +199,12 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
     
     setIsLoading(true);
     
-    // Animação de saída dos produtos atuais
+    // Quick fade out
     await gsap.to('.product-card', {
-      y: -30,
       opacity: 0,
-      scale: 0.9,
-      duration: 0.3,
-      stagger: 0.05,
+      y: -20,
+      duration: 0.2,
+      stagger: 0.03,
       ease: 'power2.in'
     });
     
@@ -209,7 +212,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
     
     setTimeout(() => {
       setIsLoading(false);
-    }, 300);
+    }, 200);
   };
 
   const FilterButton: React.FC<{ label: string; filterKey: string; count?: number }> = ({ 
@@ -220,10 +223,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
     <button 
       onClick={() => handleFilterChange(filterKey)}
       disabled={isLoading}
-      className={`relative px-6 py-3 text-sm font-semibold rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+      className={`relative px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-150 disabled:opacity-50 ${
         filter === filterKey 
-          ? 'bg-red-600 text-white shadow-lg transform scale-105' 
-          : 'bg-white text-gray-700 hover:bg-gray-100 hover:text-gray-900 border border-gray-300'
+          ? 'bg-accent text-white' 
+          : 'bg-surface text-secondary hover:bg-surface-hover hover:text-primary border border-border'
       }`}
     >
       <span>{label}</span>
@@ -231,43 +234,35 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
         <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
           filter === filterKey 
             ? 'bg-white/20 text-white' 
-            : 'bg-gray-200 text-gray-600'
+            : 'bg-surface-hover text-tertiary'
         }`}>
           {count}
         </span>
-      )}
-      
-      {/* Indicador ativo */}
-      {filter === filterKey && (
-        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full"></div>
       )}
     </button>
   );
 
   return (
-    <section id="products" ref={sectionRef} className="py-20 md:py-32 bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-5">
+    <section id="products" ref={sectionRef} className="py-20 md:py-32 bg-primary">
+      <div className="container">
         
         {/* Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <h2 className="section-title text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight text-gray-900">
-            <span className="title-line block overflow-hidden">Produtos</span>
-            <span className="title-line block overflow-hidden">
-              em <span className="text-red-600">Destaque</span>
-            </span>
+        <div className="text-center mb-16">
+          <h2 className="section-title text-h1 mb-4 text-primary">
+            Featured <span className="text-accent">Products</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 font-light max-w-2xl mx-auto">
-            Descubra nossa seleção exclusiva de produtos com tecnologia de ponta e design inovador
+          <p className="text-body text-secondary max-w-2xl mx-auto">
+            Discover our curated selection of premium athletic gear designed for peak performance
           </p>
         </div>
         
-        {/* Filtros e Ordenação */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-6 mb-12 md:mb-16">
+        {/* Filters and Sort */}
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-6 mb-12">
           
-          {/* Filtros por categoria */}
+          {/* Category Filters */}
           <div className="filter-buttons flex flex-wrap justify-center gap-3">
             <FilterButton 
-              label="Todos" 
+              label="All" 
               filterKey="all" 
               count={productsData.length}
             />
@@ -288,19 +283,19 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
             />
           </div>
 
-          {/* Ordenação */}
+          {/* Sort */}
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 font-medium">Ordenar por:</span>
+            <span className="text-sm text-secondary font-medium">Sort by:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+              className="input px-4 py-2 text-sm min-w-[140px]"
             >
-              <option value="featured">Destaque</option>
-              <option value="price-low">Menor Preço</option>
-              <option value="price-high">Maior Preço</option>
-              <option value="name">Nome A-Z</option>
-              <option value="rating">Melhor Avaliado</option>
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name A-Z</option>
+              <option value="rating">Highest Rated</option>
             </select>
           </div>
         </div>
@@ -309,39 +304,39 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
         {isLoading && (
           <div className="flex justify-center items-center py-20">
             <div className="flex items-center gap-3">
-              <svg className="w-8 h-8 animate-spin text-red-600" fill="none" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 animate-spin text-accent" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span className="text-gray-600 font-medium">Carregando produtos...</span>
+              <span className="text-secondary font-medium">Loading products...</span>
             </div>
           </div>
         )}
         
-        {/* Grid de Produtos */}
+        {/* Products Grid */}
         {!isLoading && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+            <div className="grid-auto-fit">
               {sortedProducts.map(product => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product}
-                  onAddToCart={onAddToCart}
-                  onQuickView={onQuickView}
-                />
+                <div key={product.id} className="product-card">
+                  <ProductCard 
+                    product={product}
+                    onAddToCart={onAddToCart}
+                    onQuickView={onQuickView}
+                  />
+                </div>
               ))}
             </div>
 
-            {/* Resultados */}
+            {/* Results Info */}
             <div className="text-center mt-12">
-              <p className="text-gray-600 mb-6">
-                Mostrando {sortedProducts.length} de {productsData.length} produtos
+              <p className="text-secondary mb-6">
+                Showing {sortedProducts.length} of {productsData.length} products
               </p>
               
-              {/* Botão Ver Mais */}
-              <button className="inline-flex items-center gap-3 px-8 py-4 bg-transparent text-gray-700 border-2 border-gray-300 text-base font-semibold rounded-full hover:bg-gray-100 hover:border-gray-400 hover:shadow-md transition-all duration-300">
-                Ver Mais Produtos
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button className="btn btn-secondary px-8 py-3">
+                Load More Products
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -352,16 +347,16 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onAddToCart, onQuic
         {/* Empty State */}
         {!isLoading && sortedProducts.length === 0 && (
           <div className="text-center py-20">
-            <svg className="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-16 h-16 text-tertiary mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Nenhum produto encontrado</h3>
-            <p className="text-gray-600 mb-6">Tente ajustar os filtros ou explorar outras categorias</p>
+            <h3 className="text-h3 text-primary mb-2">No products found</h3>
+            <p className="text-secondary mb-6">Try adjusting your filters or explore other categories</p>
             <button 
               onClick={() => handleFilterChange('all')}
-              className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors duration-200"
+              className="btn btn-primary"
             >
-              Ver Todos os Produtos
+              View All Products
             </button>
           </div>
         )}

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useLenis } from './hooks/useLenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -91,7 +90,6 @@ const mockProductDetail = {
 export default function Home() {
   // Registrar plugins GSAP
   gsap.registerPlugin(ScrollTrigger, TextPlugin);
-  useLenis();
 
   // Estados
   const [loading, setLoading] = useState<boolean>(true);

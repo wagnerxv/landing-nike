@@ -37,40 +37,20 @@ const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Animação de entrada da navbar
+    // Simple fade-in animation for navbar
     gsap.fromTo('#navbar', 
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
     );
 
-    // Efeito de scroll para mostrar/esconder navbar
-    const showAnim = gsap.from('#navbar', { 
-      yPercent: -100,
-      paused: true,
-      duration: 0.3,
-      ease: 'power2.out'
-    }).progress(1);
-    
-    ScrollTrigger.create({
-      start: "top top",
-      end: 99999,
-      onUpdate: (self) => {
-        self.direction === -1 ? showAnim.play() : showAnim.reverse()
-      }
-    });
-
-    // Mudança de estilo no scroll
+    // Scroll state handler
     const handleScroll = () => {
-      const scrolled = window.scrollY > 50;
+      const scrolled = window.scrollY > 20;
       setIsScrolled(scrolled);
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -86,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
         window.scrollTo({
           top: offsetPosition,
-          behavior: 'smooth'
+          behavior: 'auto' // Native scrolling
         });
       }
     }
@@ -96,59 +76,56 @@ const Navbar: React.FC<NavbarProps> = ({
     e.preventDefault();
     if (searchQuery.trim()) {
       console.log('Searching for:', searchQuery);
-      // Implementar lógica de busca
     }
   };
-
-  const spanBaseClasses = "block w-6 h-0.5 bg-current transition-all duration-300 ease-in-out";
 
   return (
     <header 
       id="navbar" 
-      className={`fixed top-0 left-0 w-full h-20 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full h-16 z-50 transition-all duration-200 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200' 
-          : 'bg-white/90 backdrop-blur-sm'
+          ? 'bg-surface backdrop-blur border-b border-border shadow-md' 
+          : 'bg-surface/80 backdrop-blur'
       }`}
       role="banner"
     >
-      <div className="container h-full flex items-center justify-between px-4 lg:px-6">
+      <div className="container h-full flex items-center justify-between">
         {/* Logo */}
         <Link 
           href="/"
-          className="flex items-center transition-transform duration-200 hover:scale-105 z-10"
-          aria-label="Nike - Página inicial"
+          className="flex items-center transition-transform duration-150 hover:scale-105 z-10"
+          aria-label="Nike - Home"
         >
-          <NikeLogo className="w-16 h-8 text-gray-900" />
+          <NikeLogo className="w-12 h-6 text-primary" />
         </Link>
         
-        {/* Menu Desktop */}
-        <nav className="hidden lg:block" role="navigation" aria-label="Menu principal">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:block" role="navigation" aria-label="Main navigation">
           <ul className="flex items-center gap-8">
             {[
               { href: '#home', label: 'Home' },
-              { href: '#products', label: 'Produtos' },
-              { href: '#collections', label: 'Coleções' },
-              { href: '#about', label: 'Sobre' },
-              { href: '#contact', label: 'Contato' }
+              { href: '#products', label: 'Products' },
+              { href: '#collections', label: 'Collections' },
+              { href: '#about', label: 'About' },
+              { href: '#contact', label: 'Contact' }
             ].map((item) => (
               <li key={item.href}>
                 <a 
                   href={item.href}
                   onClick={handleLinkClick}
-                  className="relative text-gray-900 font-medium text-sm tracking-wide py-2 px-1 transition-colors duration-200 hover:text-red-600 group"
+                  className="relative text-primary font-medium text-sm py-2 px-1 transition-colors duration-150 hover:text-accent group"
                 >
                   {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-200 group-hover:w-full"></span>
                 </a>
               </li>
             ))}
           </ul>
         </nav>
         
-        {/* Ações do usuário */}
-        <div className="flex items-center gap-2 lg:gap-4">
-          {/* Busca Desktop */}
+        {/* Actions */}
+        <div className="flex items-center gap-3">
+          {/* Search Desktop */}
           <div className="hidden md:block relative">
             {isSearchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
@@ -156,16 +133,16 @@ const Navbar: React.FC<NavbarProps> = ({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar produtos..."
-                  className="w-64 px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  placeholder="Search products..."
+                  className="w-64 px-4 py-2 text-sm bg-surface border border-border rounded-lg focus:outline-none focus:border-accent transition-colors duration-150"
                   autoFocus
                 />
                 <button
                   type="button"
                   onClick={() => setIsSearchOpen(false)}
-                  className="ml-2 p-2 text-gray-500 hover:text-gray-700"
+                  className="ml-2 p-2 text-secondary hover:text-primary transition-colors duration-150"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -173,38 +150,38 @@ const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-gray-700 hover:text-red-600 transition-colors duration-200 rounded-full hover:bg-gray-100"
-                aria-label="Buscar produtos"
+                className="p-2 text-secondary hover:text-primary transition-colors duration-150 rounded-lg hover:bg-surface-hover"
+                aria-label="Search products"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
             )}
           </div>
 
-          {/* Busca Mobile */}
+          {/* Mobile Search */}
           <button 
-            className="md:hidden p-2 text-gray-700 hover:text-red-600 transition-colors duration-200 rounded-full hover:bg-gray-100"
-            aria-label="Buscar produtos"
+            className="md:hidden p-2 text-secondary hover:text-primary transition-colors duration-150 rounded-lg hover:bg-surface-hover"
+            aria-label="Search products"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
           
-          {/* Carrinho */}
+          {/* Cart */}
           <button 
             onClick={onCartOpen}
-            className="relative p-2 text-gray-700 hover:text-red-600 transition-colors duration-200 rounded-full hover:bg-gray-100"
-            aria-label={`Carrinho de compras - ${cartItemsCount} itens`}
+            className="relative p-2 text-secondary hover:text-primary transition-colors duration-150 rounded-lg hover:bg-surface-hover"
+            aria-label={`Shopping cart - ${cartItemsCount} items`}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             {cartItemsCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
-                {cartItemsCount > 99 ? '99+' : cartItemsCount}
+              <span className="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {cartItemsCount > 9 ? '9+' : cartItemsCount}
               </span>
             )}
           </button>
@@ -212,28 +189,28 @@ const Navbar: React.FC<NavbarProps> = ({
           {/* User Menu */}
           {user ? (
             <div className="relative group">
-              <button className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-red-600 transition-colors duration-200 rounded-lg hover:bg-gray-100">
+              <button className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm font-medium text-secondary hover:text-primary transition-colors duration-150 rounded-lg hover:bg-surface-hover">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span className="max-w-20 truncate">{user.name}</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               
-              {/* Dropdown Menu */}
-              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              {/* Dropdown */}
+              <div className="absolute right-0 top-full mt-2 w-48 bg-surface rounded-lg shadow-xl border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
                 <div className="py-2">
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Minha Conta</a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meus Pedidos</a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Favoritos</a>
-                  <hr className="my-2" />
+                  <a href="#" className="block px-4 py-2 text-sm text-secondary hover:text-primary hover:bg-surface-hover transition-colors duration-150">My Account</a>
+                  <a href="#" className="block px-4 py-2 text-sm text-secondary hover:text-primary hover:bg-surface-hover transition-colors duration-150">My Orders</a>
+                  <a href="#" className="block px-4 py-2 text-sm text-secondary hover:text-primary hover:bg-surface-hover transition-colors duration-150">Favorites</a>
+                  <hr className="my-2 border-border" />
                   <button 
                     onClick={onLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    className="block w-full text-left px-4 py-2 text-sm text-accent hover:bg-surface-hover transition-colors duration-150"
                   >
-                    Sair
+                    Sign Out
                   </button>
                 </div>
               </div>
@@ -241,31 +218,31 @@ const Navbar: React.FC<NavbarProps> = ({
           ) : (
             <button 
               onClick={onLoginOpen}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-red-600 transition-colors duration-200 rounded-lg hover:bg-gray-100"
-              aria-label="Fazer login"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-secondary hover:text-primary transition-colors duration-150 rounded-lg hover:bg-surface-hover"
+              aria-label="Sign in"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <span>Login</span>
+              <span>Sign In</span>
             </button>
           )}
           
-          {/* Menu Mobile Toggle */}
+          {/* Mobile Menu Toggle */}
           <button 
-            className="lg:hidden flex flex-col gap-1 p-2 cursor-pointer z-[1001] rounded-md hover:bg-gray-100 transition-colors duration-200" 
+            className="lg:hidden flex flex-col gap-1 p-2 cursor-pointer z-[1001] rounded-lg hover:bg-surface-hover transition-colors duration-150" 
             onClick={onMenuToggle}
-            aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileMenuOpen}
           >
-            <span className={`${spanBaseClasses} origin-top-left ${
-              isMobileMenuOpen ? 'rotate-45 translate-x-[2px] -translate-y-[2px]' : ''
+            <span className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
+              isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
             }`}></span>
-            <span className={`${spanBaseClasses} ${
-              isMobileMenuOpen ? 'opacity-0 scale-0' : ''
+            <span className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
+              isMobileMenuOpen ? 'opacity-0' : ''
             }`}></span>
-            <span className={`${spanBaseClasses} origin-bottom-left ${
-              isMobileMenuOpen ? '-rotate-45 translate-x-[2px] translate-y-[2px]' : ''
+            <span className={`block w-5 h-0.5 bg-current transition-all duration-200 ${
+              isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
             }`}></span>
           </button>
         </div>
